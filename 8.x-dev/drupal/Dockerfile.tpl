@@ -18,6 +18,6 @@ RUN set -eux; \
   curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_DEV_TAG}.tar.gz" -o drupal.tar.gz; \
   tar -xz --strip-components=1 -f drupal.tar.gz; \
   rm drupal.tar.gz; \
-  && mkdir -p /var/www/html/vendor/bin/ \
+  mkdir -p /var/www/html/vendor/bin/ \
   && chmod 777 /var/www \
   && chown -R www-data:www-data /var/www/.composer /var/www/html
