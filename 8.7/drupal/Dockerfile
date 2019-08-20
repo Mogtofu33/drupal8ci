@@ -29,12 +29,9 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   libxslt-dev \
   mariadb-client \
   jq \
-  shellcheck \
   git \
   unzip \
   chromium \
-  && curl -fsSL https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_amd64 -o /usr/local/bin/yq \
-  && chmod +x /usr/local/bin/yq \
   # Install xsl, mysqli, xdebug, imagick.
   && docker-php-ext-install xsl mysqli \
   && pecl install imagick xdebug \
@@ -44,22 +41,29 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 
 RUN mkdir -p /var/www/.composer /var/www/html/vendor/bin/ \
   && chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www/.composer /var/www/html/vendor
+  && chown -R www-data:www-data /var/www/.composer /var/www/html
 
 WORKDIR /var/www/.composer
 USER www-data
 
-# Put a turbo on composer, install phpqa + tools + Robo + Coder.
-# Install Drupal dev third party and upgrade Php-unit.
+# Put a turbo on composer with prestissimo and install Robo.
 COPY composer.json /var/www/.composer/composer.json
 RUN composer install --no-ansi -n --profile --no-suggest \
   && composer clear-cache \
   && rm -rf /var/www/.composer/cache/*
 
+WORKDIR /var/www/html
+
+# Install Drupal dev and PHP 7 update for PHPunit, see
+# https://github.com/drupal/drupal/blob/8.7.x/composer.json#L56
+RUN composer run-script drupal-phpunit-upgrade --no-ansi \
+  && composer clear-cache \
+  && npm cache clean --force \
+  && rm -rf /tmp/*
+
 USER root
 
-RUN ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \
-  && ln -sf /var/www/.composer/vendor/bin/* /var/www/html/vendor/bin/
+RUN ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin
 
 COPY run-tests.sh /scripts/run-tests.sh
 COPY start-chrome.sh /scripts/start-chrome.sh
@@ -76,12 +80,3 @@ RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
 
 #### Specific part for the included Drupal 8 code in this image.
 COPY .env.nightwatch /var/www/html/core/.env
-
-WORKDIR /var/www/html
-
-# Install Drupal dev and PHP 7 update for PHPunit, see
-# https://github.com/drupal/drupal/blob/8.7.x/composer.json#L56
-RUN composer run-script drupal-phpunit-upgrade --no-ansi \
-  && composer clear-cache \
-  && npm cache clean --force \
-  && rm -rf /tmp/*

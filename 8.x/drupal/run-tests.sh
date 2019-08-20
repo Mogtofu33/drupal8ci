@@ -16,29 +16,29 @@ else
 fi
 
 if [ -x "$(command -v apache2)" ]; then
-  apache2 -v | grep version
-  a2query -s 000-default
+  apache2 -v | grep version | cut -d " " -f3-
+  cat /etc/apache2/sites-available/000-default.conf | grep DocumentRoot | xargs
 else
   printf "%sApache missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v composer)" ]; then
-  composer --version | grep version
+  sudo -E -u www-data composer --version | grep version
 else
   printf "%Composer missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v mysql)" ]; then
-  mysql -V
+  mysql --version
 else
   printf "%sMysql client missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v robo)" ]; then
-  robo -V
+  sudo -E -u www-data robo --version
 else
   printf "%srobo missing!%s\\n" "${red}" "${end}"
   __error=1
@@ -46,38 +46,17 @@ fi
 
 if [ -x "$(command -v node)" ]; then
   printf "Node "
-  node --version
+  sudo -E -u www-data node --version
 else
   printf "%node missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v yarn)" ]; then
-  yarn versions | grep 'versions'
+  printf "Yarn "
+  sudo -E -u www-data yarn --version
 else
   printf "%syarn missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v phpcs)" ]; then
-  phpcs -i
-else
-  printf "%phpcs missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v phpqa)" ]; then
-  phpqa tools
-else
-  printf "%sphpqa missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v shellcheck)" ]; then
-  printf "Shellcheck "
-  shellcheck --version | grep 'version'
-else
-  printf "%shellcheck missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
@@ -85,13 +64,6 @@ if [ -x "$(command -v jq)" ]; then
   jq --version
 else
   printf "%jq missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v yq)" ]; then
-  yq --version
-else
-  printf "%yq missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
@@ -109,11 +81,15 @@ else
   __error=1
 fi
 
+if [ -f "/var/www/html/composer.json" ]; then
+  cat /var/www/html/composer.json | grep "drupal/core" | xargs | cut -d " " -f1-
+fi
+
 if [ -f ./run-tests-extra.sh ]; then
   source ./run-tests-extra.sh
 fi
 
-printf "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+printf "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 if [ $__error = 1 ]; then
   printf "\\n\\n%s[ERROR] Tests failed!%s\\n\\n" "${red}" "${end}"
