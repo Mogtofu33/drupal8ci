@@ -35,7 +35,6 @@ Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
     - [Stylelint](https://github.com/stylelint/stylelint)
     - [Prettier](https://github.com/prettier/prettier)
     - [Nightwatch.js](http://nightwatchjs.org/)
-    - Added: [Sasslint@1.13](https://github.com/sasstools/sass-lint)
 
 ## Basic usage (local)
 

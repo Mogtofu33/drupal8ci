@@ -75,14 +75,6 @@ else
   __error=1
 fi
 
-if [ -x "$(command -v sass-lint)" ]; then
-  printf "Sass-lint "
-  sass-lint --version
-else
-  printf "%sass-lint missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
 if [ -x "$(command -v phpcs)" ]; then
   phpcs -i
 else
