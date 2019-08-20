@@ -60,9 +60,7 @@ RUN composer install --no-ansi -n --profile --no-suggest \
 WORKDIR /var/www/.node
 
 RUN cp /var/www/html/core/package.json /var/www/.node \
-  && npm install --no-audit \
-  && npm install --no-audit git://github.com/sasstools/sass-lint.git#develop \
-  && yarn install \
+  && yarn install --no-progress \
   && npm cache clean --force
 
 USER root
