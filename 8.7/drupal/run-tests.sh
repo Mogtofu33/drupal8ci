@@ -59,22 +59,6 @@ else
   __error=1
 fi
 
-if [ -x "$(command -v eslint)" ]; then
-  printf "Eslint "
-  eslint --version
-else
-  printf "%eslint missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v stylelint)" ]; then
-  printf "Stylelint "
-  stylelint --version
-else
-  printf "%stylelint missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
 if [ -x "$(command -v phpcs)" ]; then
   phpcs -i
 else
@@ -115,27 +99,6 @@ if [ -x "$(command -v sudo)" ]; then
   sudo --version | grep 'Sudo version'
 else
   printf "%sudo missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v phpunit)" ]; then
-  phpunit --version | grep 'PHPUnit'
-else
-  printf "%phpunit missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v nightwatch)" ]; then
-  nightwatch --version
-else
-  printf "%Nightwatch missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v chromedriver)" ]; then
-  chromedriver --version
-else
-  printf "%chromedriver missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
