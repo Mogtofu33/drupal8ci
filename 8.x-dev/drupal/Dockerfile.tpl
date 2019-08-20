@@ -2,22 +2,6 @@ FROM mogtofu33/drupal8ci:$DRUPAL_TAG
 
 LABEL maintainer="dev-drupal.com"
 
-USER www-data
-
-# Update Drupal 8 Node tools / linters / Nightwatch.
-WORKDIR /var/www/.node
-
-RUN cp /var/www/html/core/package.json /var/www/.node \
-  && yarn install --no-progress \
-  && npm cache clean --force
-
-USER root
-
-WORKDIR /var/www/html
-
-RUN ln -sf /var/www/.node/node_modules/.bin/* /usr/local/bin \
-  && ln -sf /var/www/.node/node_modules /var/www/html/core/node_modules
-
 # Install Chromium 76 on debian.
 
 COPY 99defaultrelease /etc/apt/apt.conf.d/99defaultrelease

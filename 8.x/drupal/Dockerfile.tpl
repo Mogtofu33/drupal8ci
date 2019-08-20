@@ -42,9 +42,9 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p /var/www/.composer /var/www/.node /var/www/html/vendor/bin/ \
+RUN mkdir -p /var/www/.composer /var/www/html/vendor/bin/ \
   && chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www/.composer /var/www/.node /var/www/html/vendor
+  && chown -R www-data:www-data /var/www/.composer /var/www/html/vendor
 
 WORKDIR /var/www/.composer
 USER www-data
@@ -56,19 +56,10 @@ RUN composer install --no-ansi -n --profile --no-suggest \
   && composer clear-cache \
   && rm -rf /var/www/.composer/cache/*
 
-# Add Drupal 8 Node tools / linters / Sass / Nightwatch.
-WORKDIR /var/www/.node
-
-RUN cp /var/www/html/core/package.json /var/www/.node \
-  && yarn install --no-progress \
-  && npm cache clean --force
-
 USER root
 
 RUN ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \
-  && ln -sf /var/www/.composer/vendor/bin/* /var/www/html/vendor/bin/ \
-  && ln -s /var/www/.node/node_modules/.bin/* /usr/local/bin \
-  && ln -s /var/www/.node/node_modules /var/www/html/core/node_modules
+  && ln -sf /var/www/.composer/vendor/bin/* /var/www/html/vendor/bin/
 
 COPY run-tests.sh /scripts/run-tests.sh
 COPY start-chrome.sh /scripts/start-chrome.sh
