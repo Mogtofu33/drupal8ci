@@ -21,6 +21,7 @@ variables:
   DOCKER_DRIVER: overlay2
   RELEASE_REGISTRY: docker.io
   RELEASE_IMAGE: index.docker.io/$RELEASE_USER
+  CI_DO_RELEASE: 1
 
 .docker_login_hub:
   - &docker_login_hub docker login -u $RELEASE_USER -p $RELEASE_PASSWORD $RELEASE_REGISTRY
@@ -46,7 +47,10 @@ stable:
     - *docker_login_hub
     # Tag for Docker hub and push.
     - docker tag $CI_REGISTRY_IMAGE/$IMAGE $RELEASE_IMAGE/$IMAGE
-    - docker push $RELEASE_IMAGE/$IMAGE
+    - docker images
+    - if [ ${CI_DO_RELEASE} == 1 ]; then
+        docker push $RELEASE_IMAGE/$IMAGE;
+      fi
   variables:
     IMAGE: drupal8ci:${DRUPAL_CURRENT_STABLE}
     DIR: '${DRUPAL_CURRENT_STABLE}/drupal'
@@ -67,7 +71,10 @@ stable:
     - *docker_login_hub
     # Tag for Docker hub and push.
     - docker tag $CI_REGISTRY_IMAGE/$IMAGE $RELEASE_IMAGE/$IMAGE
-    - docker push $RELEASE_IMAGE/$IMAGE
+    - docker images
+    - if [ ${CI_DO_RELEASE} == 1 ]; then
+        docker push $RELEASE_IMAGE/$IMAGE;
+      fi
 
 selenium:
   stage: stable selenium
@@ -110,8 +117,11 @@ dev-selenium:
     # Tag for Docker hub and push for all versions.
     - docker tag $CI_REGISTRY_IMAGE/$IMAGE $RELEASE_IMAGE/$IMAGE
     - docker tag $CI_REGISTRY_IMAGE/$IMAGE $RELEASE_IMAGE/$IMAGE_DEV
-    - docker push $RELEASE_IMAGE/$IMAGE
-    - docker push $RELEASE_IMAGE/$IMAGE_DEV
+    - docker images
+    - if [ ${CI_DO_RELEASE} == 1 ]; then
+        docker push $RELEASE_IMAGE/$IMAGE;
+        docker push $RELEASE_IMAGE/$IMAGE_DEV;
+      fi
 
 no-drupal:
   stage: no drupal
