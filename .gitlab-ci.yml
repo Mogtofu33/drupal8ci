@@ -90,7 +90,7 @@ dev:
   variables:
     IMAGE: drupal8ci:${DRUPAL_CURRENT_DEV}
     DIR: '${DRUPAL_CURRENT_DEV}/drupal'
-    IMAGE_BASE: ${CI_REGISTRY_IMAGE}/drupal8ci:${DRUPAL_CURRENT_STABLE}
+    IMAGE_BASE: drupal:${DRUPAL_CURRENT_STABLE}-apache
 
 dev-selenium:
   stage: dev selenium

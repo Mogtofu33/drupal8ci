@@ -1,0 +1,11 @@
+{
+    "name": "mog33/drupal8ci",
+    "description": "Packages for CI with Drupal 8 for https://gitlab.com/mog33/drupal8ci.",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "hirak/prestissimo": "^0.3.8",
+        "consolidation/robo": "^1.3"
+    }
+}
