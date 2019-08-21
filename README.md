@@ -35,6 +35,17 @@ Those images can be used for local tests with Docker, see [Running the jobs loca
 
 CI variable `CI_DO_RELEASE`, default to 1 to push to Docker hub.
 
+Other variables to skip jobs:
+
+```bash
+SKIP_STABLE              0
+SKIP_STABLE_SELENIUM     0
+SKIP_DEV                 0
+SKIP_DEV_SELENIUM        0
+SKIP_NO_DRUPAL           0
+SKIP_NO_DRUPAL_SELENIUM  0
+```
+
 ```bash
 # Local build and tests with no push to Docker hub.
 make dry-release
