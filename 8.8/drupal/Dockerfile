@@ -4,6 +4,19 @@ FROM drupal:8.7-apache
 
 LABEL maintainer="dev-drupal.com"
 
+WORKDIR /var/www/html
+
+# Remove the vanilla Drupal project that comes with the parent image.
+RUN rm -rf ..?* .[!.]* *
+
+RUN set -eux; \
+  curl -fSL "https://ftp.drupal.org/files/projects/drupal-8.8.x-dev.tar.gz" -o drupal.tar.gz; \
+  tar -xz --strip-components=1 -f drupal.tar.gz; \
+  rm drupal.tar.gz; \
+  mkdir -p /var/www/.composer /var/www/html/vendor/bin/ \
+  && chmod 777 /var/www \
+  && chown -R www-data:www-data /var/www/.composer /var/www/html
+
 # Install composer.
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
@@ -46,8 +59,7 @@ RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak \
   && apt-get update && apt-get -t testing install --no-install-recommends -y \
   chromium
 
-RUN mkdir -p /var/www/.composer /var/www/html/vendor/bin/ \
-  && chmod 777 /var/www \
+RUN chmod 777 /var/www \
   && chown -R www-data:www-data /var/www/.composer
 
 WORKDIR /var/www/.composer
@@ -59,6 +71,7 @@ RUN composer install --no-ansi -n --profile --no-suggest \
   && composer clear-cache \
   && rm -rf /var/www/.composer/cache/*
 
+WORKDIR /var/www/html
 USER root
 
 RUN ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin
@@ -76,13 +89,3 @@ RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
   && sed -i "s#max_execution_time = 30#max_execution_time = 90#g" /usr/local/etc/php/php.ini \
   && sed -i "s#;max_input_nesting_level = 64#max_input_nesting_level = 512#g" /usr/local/etc/php/php.ini
 
-# Remove the vanilla Drupal project that comes with the parent image.
-RUN rm -rf ..?* .[!.]* *
-
-RUN set -eux; \
-  curl -fSL "https://ftp.drupal.org/files/projects/drupal-8.8.x-dev.tar.gz" -o drupal.tar.gz; \
-  tar -xz --strip-components=1 -f drupal.tar.gz; \
-  rm drupal.tar.gz; \
-  mkdir -p /var/www/html/vendor/bin/ \
-  && chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www/.composer /var/www/html
