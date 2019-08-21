@@ -26,7 +26,7 @@ fi
 if [ -x "$(command -v composer)" ]; then
   sudo -E -u www-data composer --version | grep version
 else
-  printf "%Composer missing!%s\\n" "${red}" "${end}"
+  printf "%sComposer missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
@@ -40,7 +40,7 @@ fi
 if [ -x "$(command -v robo)" ]; then
   sudo -E -u www-data robo --version
 else
-  printf "%srobo missing!%s\\n" "${red}" "${end}"
+  printf "%sRobo missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
@@ -48,7 +48,7 @@ if [ -x "$(command -v node)" ]; then
   printf "Node "
   sudo -E -u www-data node --version
 else
-  printf "%node missing!%s\\n" "${red}" "${end}"
+  printf "%sNode missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
@@ -56,33 +56,29 @@ if [ -x "$(command -v yarn)" ]; then
   printf "Yarn "
   sudo -E -u www-data yarn --version
 else
-  printf "%syarn missing!%s\\n" "${red}" "${end}"
+  printf "%sYarn missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v jq)" ]; then
   jq --version
 else
-  printf "%jq missing!%s\\n" "${red}" "${end}"
+  printf "%sJq missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v sudo)" ]; then
   sudo --version | grep 'Sudo version'
 else
-  printf "%sudo missing!%s\\n" "${red}" "${end}"
+  printf "%sSudo missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v chromium)" ]; then
   chromium --version
 else
-  printf "%chromium missing!%s\\n" "${red}" "${end}"
+  printf "%sChromium missing!%s\\n" "${red}" "${end}"
   __error=1
-fi
-
-if [ -f "/var/www/html/composer.json" ]; then
-  cat /var/www/html/composer.json | grep "drupal/core" | xargs | cut -d " " -f1-
 fi
 
 if [ -f ./run-tests-extra.sh ]; then

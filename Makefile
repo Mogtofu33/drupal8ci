@@ -47,6 +47,9 @@ define file_prepare_dev
 	@rm -f "./$(1)/drupal/Dockerfile.tpl";
 	@DRUPAL_DEV_TAG="$(1)" envsubst < "./$(1)/selenium/Dockerfile.tpl" > "./$(1)/selenium/Dockerfile";
 	@rm -f "./$(1)/selenium/Dockerfile.tpl";
+	@cp -u ./8.x/drupal/composer.json ./$(1)/drupal/;
+	@cp -u ./8.x/drupal/*.sh ./$(1)/drupal/;
+	@cp -u ./8.x/selenium/*.sh ./$(1)/selenium/;
 endef
 
 define clean_prepare
