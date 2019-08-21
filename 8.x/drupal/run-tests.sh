@@ -81,8 +81,8 @@ else
   __error=1
 fi
 
-if [ -f ./run-tests-extra.sh ]; then
-  source ./run-tests-extra.sh
+if [ -f /scripts/run-tests-extra.sh ]; then
+  source /scripts/run-tests-extra.sh
 fi
 
 printf "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
