@@ -13,12 +13,9 @@ RUN set -eux; \
   curl -fSL "https://ftp.drupal.org/files/projects/drupal-8.8.x-dev.tar.gz" -o drupal.tar.gz; \
   tar -xz --strip-components=1 -f drupal.tar.gz; \
   rm drupal.tar.gz; \
-  mkdir -p /var/www/.composer /var/www/html/vendor/bin/ \
+  mkdir -p /var/www/.composer/cache /var/www/html/vendor/bin/ \
   && chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www/.composer /var/www/html
-
-# Install composer.
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+  && chown -R www-data:www-data /var/www/.composer/cache /var/www/html
 
 # Install needed programs for next steps.
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -59,15 +56,21 @@ RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak \
   && apt-get update && apt-get -t testing install --no-install-recommends -y \
   chromium
 
+# Install composer.
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
 RUN chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www/.composer
+  && chmod +x /usr/local/bin/composer \
+  && chown -R www-data:www-data /usr/local/bin/composer /var/www/.composer
+
+COPY composer.json /var/www/.composer/composer.json
 
 WORKDIR /var/www/.composer
 USER www-data
 
 # Put a turbo on composer with prestissimo and install Robo.
-COPY composer.json /var/www/.composer/composer.json
-RUN composer install --no-ansi -n --profile --no-suggest \
+RUN /usr/local/bin/composer --version \
+  && composer install --no-ansi -n --profile --no-suggest \
   && composer clear-cache \
   && rm -rf /var/www/.composer/cache/*
 

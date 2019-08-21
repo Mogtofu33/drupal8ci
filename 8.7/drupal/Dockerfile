@@ -4,9 +4,6 @@ FROM drupal:8.7-apache
 
 LABEL maintainer="dev-drupal.com"
 
-# Install composer.
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
 # Install needed programs for next steps.
 RUN apt-get update && apt-get install --no-install-recommends -y \
   apt-transport-https \
@@ -39,16 +36,22 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p /var/www/.composer /var/www/html/vendor/bin/ \
+# Install composer.
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+RUN mkdir -p /var/www/.composer/cache /var/www/html/vendor/bin/ \
   && chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www/.composer /var/www/html
+  && chmod +x /usr/local/bin/composer \
+  && chown -R www-data:www-data /usr/local/bin/composer /var/www/.composer /var/www/html
+
+COPY composer.json /var/www/.composer/composer.json
 
 WORKDIR /var/www/.composer
 USER www-data
 
 # Put a turbo on composer with prestissimo and install Robo.
-COPY composer.json /var/www/.composer/composer.json
-RUN composer install --no-ansi -n --profile --no-suggest \
+RUN /usr/local/bin/composer --version \
+  && composer install --no-ansi -n --profile --no-suggest \
   && composer clear-cache \
   && rm -rf /var/www/.composer/cache/*
 
