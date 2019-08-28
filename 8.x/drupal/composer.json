@@ -8,28 +8,10 @@
         "hirak/prestissimo": "^0.3.8",
         "edgedesign/phpqa": "^1.21",
         "consolidation/robo": "^1.3",
-        "boedah/robo-drush": "^4.2",
         "drupal/coder": "^8.3",
         "drush/drush": "^9",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "jakub-onderka/php-console-highlighter": "^0.4.0",
-        "sensiolabs/security-checker": "^5.0",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-        "twig/twig": "^1"
-    },
-    "require-dev": {
-        "behat/mink": "1.7.x-dev",
-        "behat/mink-goutte-driver": "^1.2",
-        "dmore/behat-chrome-extension": "^1.3",
-        "bex/behat-screenshot": "^1.2",
-        "drupal/drupal-extension": "^4.0",
-        "emuse/behat-html-formatter": "0.1.*",
-        "mikey179/vfsstream": "^1.2",
-        "phpunit/phpunit": "^6.5",
-        "phpspec/prophecy": "^1.7",
-        "symfony/css-selector": "^3.4.0",
-        "symfony/phpunit-bridge": "^3.4.3",
-        "symfony/debug": "^3.4.0",
-        "justinrainbow/json-schema": "^5.2"
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0"
     }
 }

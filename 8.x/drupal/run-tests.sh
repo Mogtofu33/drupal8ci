@@ -97,25 +97,10 @@ else
   __error=1
 fi
 
-if [ -x "$(command -v shellcheck)" ]; then
-  printf "Shellcheck "
-  shellcheck --version | grep 'version'
-else
-  printf "%shellcheck missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
 if [ -x "$(command -v jq)" ]; then
   jq --version
 else
   printf "%jq missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v yq)" ]; then
-  yq --version
-else
-  printf "%yq missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
@@ -154,8 +139,8 @@ else
   __error=1
 fi
 
-if [ -f ./run-tests-extra.sh ]; then
-  source ./run-tests-extra.sh
+if [ -f /scripts/run-tests-extra.sh ]; then
+  source /scripts/run-tests-extra.sh
 fi
 
 printf "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"

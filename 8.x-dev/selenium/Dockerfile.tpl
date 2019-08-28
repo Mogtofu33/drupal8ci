@@ -5,7 +5,6 @@ LABEL maintainer="dev-drupal.com"
 
 ENV JAVA_OPTS="-Xmx512m"
 ENV SE_OPTS=""
-ENV CHROMIUM_OPTS="--no-sandbox --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222"
 
 ADD http://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar selenium-server-standalone.jar
 ADD https://raw.githubusercontent.com/SeleniumHQ/docker-selenium/master/Standalone/start-selenium-standalone.sh /scripts/start-selenium-standalone.sh

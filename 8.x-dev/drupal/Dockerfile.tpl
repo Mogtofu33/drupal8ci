@@ -10,3 +10,7 @@ RUN set -eux; \
   tar -xz --strip-components=1 -f drupal.tar.gz; \
   rm drupal.tar.gz; \
   chown -R www-data:www-data sites modules themes
+
+RUN mkdir -p /var/www/html/vendor/bin/ \
+  && chown -R www-data:www-data /var/www/html/vendor \
+  && ln -sf /var/www/.composer/vendor/bin/* /var/www/html/vendor/bin/

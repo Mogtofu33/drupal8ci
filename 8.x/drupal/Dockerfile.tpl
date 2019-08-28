@@ -4,9 +4,6 @@ FROM drupal:$DRUPAL_TAG-apache
 
 LABEL maintainer="dev-drupal.com"
 
-# Install composer.
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
 # Install needed programs for next steps.
 RUN apt-get update && apt-get install --no-install-recommends -y \
   apt-transport-https \
@@ -29,11 +26,8 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   libxslt-dev \
   mariadb-client \
   jq \
-  shellcheck \
   git \
   unzip \
-  && curl -fsSL https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_amd64 -o /usr/local/bin/yq \
-  && chmod +x /usr/local/bin/yq \
   # Install xsl, mysqli, xdebug, imagick.
   && docker-php-ext-install xsl mysqli \
   && pecl install imagick xdebug \
@@ -41,44 +35,52 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install Chromium 76+ on debian.
-
+## Install Chromium 76+ on debian.
 COPY 99defaultrelease /etc/apt/apt.conf.d/99defaultrelease
 COPY sources.list /etc/apt/sources.list.d/sources.list
-
 RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak \
   && apt-get update && apt-get -t testing install --no-install-recommends -y \
   chromium
 
-RUN mkdir -p /var/www/.composer /var/www/.node /var/www/html/vendor/bin/ \
-  && chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www/.composer /var/www/.node /var/www/html/vendor
+# Install Composer.
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+COPY composer.json /var/www/.composer/composer.json
 
+RUN mkdir -p /var/www/.composer /var/www/html/vendor/bin/ \
+  && chmod 777 /var/www \
+  && chown -R www-data:www-data /var/www/.composer /var/www/html/vendor /var/www/html/composer.*
+
+# Manage Composer.
 WORKDIR /var/www/.composer
+
 USER www-data
 
 # Put a turbo on composer, install phpqa + tools + Robo + Coder.
 # Install Drupal dev third party and upgrade Php-unit.
-COPY composer.json /var/www/.composer/composer.json
 RUN composer install --no-ansi -n --profile --no-suggest \
   && composer clear-cache \
   && rm -rf /var/www/.composer/cache/*
 
-# Add Drupal 8 Node tools / linters / Sass / Nightwatch.
-WORKDIR /var/www/.node
+# [TEMPORARY] Drupal 8.7 only.
+# Install Drupal dev and PHP 7 update for PHPunit, see
+# https://github.com/drupal/drupal/blob/8.7.x/composer.json#L56
 
-RUN cp /var/www/html/core/package.json /var/www/.node \
-  && npm install --no-audit \
-  && npm install --no-audit git://github.com/sasstools/sass-lint.git#develop \
-  && yarn install \
-  && npm cache clean --force
+WORKDIR /var/www/html
 
+RUN composer run-script drupal-phpunit-upgrade --no-ansi \
+  && composer clear-cache \
+  && rm -rf /tmp/* \
+  && chown -R www-data:www-data /var/www/html/vendor
+
+# Manage final tasks.
 USER root
 
-RUN ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \
-  && ln -sf /var/www/.composer/vendor/bin/* /var/www/html/vendor/bin/ \
-  && ln -s /var/www/.node/node_modules/.bin/* /usr/local/bin \
-  && ln -s /var/www/.node/node_modules /var/www/html/core/node_modules
+## Specific part for the included Drupal 8 code in this image.
+COPY .env.nightwatch /var/www/html/core/.env
+
+RUN ln -sf /var/www/html/vendor/bin/* /usr/local/bin \
+  && ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \
+  && ln -sf /var/www/.composer/vendor/bin/* /var/www/html/vendor/bin/
 
 COPY run-tests.sh /scripts/run-tests.sh
 COPY start-chrome.sh /scripts/start-chrome.sh
@@ -92,15 +94,3 @@ RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
   && sed -i "s#memory_limit = 128M#memory_limit = 512M#g" /usr/local/etc/php/php.ini \
   && sed -i "s#max_execution_time = 30#max_execution_time = 90#g" /usr/local/etc/php/php.ini \
   && sed -i "s#;max_input_nesting_level = 64#max_input_nesting_level = 512#g" /usr/local/etc/php/php.ini
-
-#### Specific part for the included Drupal 8 code in this image.
-COPY .env.nightwatch /var/www/html/core/.env
-
-WORKDIR /var/www/html
-
-# Install Drupal dev and PHP 7 update for PHPunit, see
-# https://github.com/drupal/drupal/blob/8.7.x/composer.json#L56
-RUN composer run-script drupal-phpunit-upgrade --no-ansi \
-  && composer clear-cache \
-  && npm cache clean --force \
-  && rm -rf /tmp/*
