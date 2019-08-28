@@ -29,21 +29,42 @@ Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
   - [Drupal Coder](https://www.drupal.org/project/coder)
   - Mariadb (MySQL) client
   - [jq](https://stedolan.github.io/jq/)
-  - [Shellcheck](https://www.shellcheck.net)
-  - [Drupal core Node tools](https://cgit.drupalcode.org/drupal/plain/core/package.json)
-    - [Eslint](https://eslint.org/)
-    - [Stylelint](https://github.com/stylelint/stylelint)
-    - [Prettier](https://github.com/prettier/prettier)
-    - [Nightwatch.js](http://nightwatchjs.org/)
-    - Added: [Sasslint@1.13](https://github.com/sasstools/sass-lint)
 
 ## Basic usage (local)
 
 The default image `8.7` include Drupal core, a variant `8.7-selenium` include Selenium server with Chromium.
 
+Tag `8.8` rely on current Drupal `8.8.x-dev` version.
+
+Variants `no-drupal` are used for a project including a Drupal template from a `composer.json`.
+
 To use with a local Drupal 8 managed by composer, mount your Drupal on `/var/www/html`
 
 Those images can be used for local tests with Docker, see [Running the jobs locally with Docker](https://gitlab.com/mog33/gitlab-ci-drupal#running-the-jobs-locally-with-docker)
+
+## Build
+
+CI variable `CI_DO_RELEASE`, default to 1 to push to Docker hub.
+
+Other variables to skip jobs:
+
+```bash
+SKIP_STABLE              0
+SKIP_STABLE_SELENIUM     0
+SKIP_DEV                 0
+SKIP_DEV_SELENIUM        0
+SKIP_NO_DRUPAL           0
+SKIP_NO_DRUPAL_SELENIUM  0
+```
+
+```bash
+# Local build and tests with no push to Docker hub.
+make dry-release
+# Local push from previous build.
+make push-release
+# All in one build and push.
+make release
+```
 
 ----
 Want some help implementing this on your project? I provide Drupal 8 expertise as a freelance, just [contact me](https://developpeur-drupal.com/en).
