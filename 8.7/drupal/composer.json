@@ -12,6 +12,8 @@
         "drush/drush": "^9",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "jakub-onderka/php-console-highlighter": "^0.4.0",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0"
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+        "sensiolabs/security-checker": "^5.0",
+        "twig/twig": "^1"
     }
 }

@@ -87,20 +87,6 @@ else
   __error=1
 fi
 
-if [ -x "$(command -v nightwatch)" ]; then
-  nightwatch --version
-else
-  printf "%sNightwatch missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v chromedriver)" ]; then
-  chromedriver --version
-else
-  printf "%sChromedriver missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
 if [ -x "$(command -v chromium)" ]; then
   chromium --version
 else
