@@ -32,7 +32,7 @@ Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
 
 ## Basic usage (local)
 
-The default image `8.7` include Drupal core, a variant `8.7-selenium` include Selenium server with Chromium.
+The default image `8.7` include Drupal core with Chromium, a variant `8.7-selenium` include Selenium server standalone chrome.
 
 Tag `8.8` rely on current Drupal `8.8.x-dev` version.
 
