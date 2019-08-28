@@ -4,6 +4,6 @@
 if [ -x "$(command -v java)" ]; then
   java -version
 else
-  printf "%sjava missing!%s\\n" "${red}" "${end}"
+  printf "%sJava missing!%s\\n" "${red}" "${end}"
   __error=1
 fi

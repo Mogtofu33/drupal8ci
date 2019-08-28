@@ -26,7 +26,7 @@ fi
 if [ -x "$(command -v composer)" ]; then
   composer --version | grep version
 else
-  printf "%Composer missing!%s\\n" "${red}" "${end}"
+  printf "%sComposer missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
@@ -48,94 +48,63 @@ if [ -x "$(command -v node)" ]; then
   printf "Node "
   node --version
 else
-  printf "%node missing!%s\\n" "${red}" "${end}"
+  printf "%sNode missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v yarn)" ]; then
   yarn versions | grep 'versions'
 else
-  printf "%syarn missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v eslint)" ]; then
-  printf "Eslint "
-  eslint --version
-else
-  printf "%eslint missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v stylelint)" ]; then
-  printf "Stylelint "
-  stylelint --version
-else
-  printf "%stylelint missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v sass-lint)" ]; then
-  printf "Sass-lint "
-  sass-lint --version
-else
-  printf "%sass-lint missing!%s\\n" "${red}" "${end}"
-  __error=1
-fi
-
-if [ -x "$(command -v phpcs)" ]; then
-  phpcs -i
-else
-  printf "%phpcs missing!%s\\n" "${red}" "${end}"
+  printf "%sYarn missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v phpqa)" ]; then
   phpqa tools
 else
-  printf "%sphpqa missing!%s\\n" "${red}" "${end}"
+  printf "%sPhpqa missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v jq)" ]; then
   jq --version
 else
-  printf "%jq missing!%s\\n" "${red}" "${end}"
+  printf "%sJq missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v sudo)" ]; then
   sudo --version | grep 'Sudo version'
 else
-  printf "%sudo missing!%s\\n" "${red}" "${end}"
+  printf "%sSudo missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v phpunit)" ]; then
   phpunit --version | grep 'PHPUnit'
 else
-  printf "%phpunit missing!%s\\n" "${red}" "${end}"
+  printf "%sPhpunit missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v nightwatch)" ]; then
   nightwatch --version
 else
-  printf "%Nightwatch missing!%s\\n" "${red}" "${end}"
+  printf "%sNightwatch missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v chromedriver)" ]; then
   chromedriver --version
 else
-  printf "%chromedriver missing!%s\\n" "${red}" "${end}"
+  printf "%sChromedriver missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
 if [ -x "$(command -v chromium)" ]; then
   chromium --version
 else
-  printf "%chromium missing!%s\\n" "${red}" "${end}"
+  printf "%sChromium missing!%s\\n" "${red}" "${end}"
   __error=1
 fi
 
