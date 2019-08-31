@@ -5,6 +5,7 @@ FROM drupal:$DRUPAL_TAG-apache
 LABEL maintainer="dev-drupal.com"
 
 ENV DBUS_SESSION_BUS_ADDRESS="/dev/null"
+ARG CHROME_DRIVER_VERSION=$CHROME_DRIVER_VERSION
 
 # Install needed programs for next steps.
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -47,7 +48,6 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 
 #==================
 # Chromedriver
-ARG CHROME_DRIVER_VERSION=76.0.3809.68
 RUN curl -fsSL https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
   -o /tmp/chromedriver_linux64.zip \
   && unzip /tmp/chromedriver_linux64.zip -d /opt \

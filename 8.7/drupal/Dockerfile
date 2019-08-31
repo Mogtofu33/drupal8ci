@@ -5,6 +5,7 @@ FROM drupal:8.7-apache
 LABEL maintainer="dev-drupal.com"
 
 ENV DBUS_SESSION_BUS_ADDRESS="/dev/null"
+ARG CHROME_DRIVER_VERSION=76.0.3809.68
 
 # Install needed programs for next steps.
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -47,14 +48,13 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 
 #==================
 # Chromedriver
-ARG CHROME_DRIVER_VERSION=76.0.3809.68
-RUN curl -fsSL https://chromedriver.storage.googleapis.com//chromedriver_linux64.zip \
+RUN curl -fsSL https://chromedriver.storage.googleapis.com/76.0.3809.68/chromedriver_linux64.zip \
   -o /tmp/chromedriver_linux64.zip \
   && unzip /tmp/chromedriver_linux64.zip -d /opt \
   && rm -f /tmp/chromedriver_linux64.zip \
-  && mv /opt/chromedriver /opt/chromedriver- \
-  && chmod 755 /opt/chromedriver- \
-  && ln -fs /opt/chromedriver- /usr/local/bin/chromedriver \
+  && mv /opt/chromedriver /opt/chromedriver-76.0.3809.68 \
+  && chmod 755 /opt/chromedriver-76.0.3809.68 \
+  && ln -fs /opt/chromedriver-76.0.3809.68 /usr/local/bin/chromedriver \
   # Add Chrome as a user
   && groupadd -r chromeuser && useradd -r -g chromeuser -G audio,video chromeuser \
   && mkdir -p /home/chromeuser && chown -R chromeuser:chromeuser /home/chromeuser

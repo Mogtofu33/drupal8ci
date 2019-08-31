@@ -1,5 +1,6 @@
 DRUPAL_CURRENT_STABLE=8.7
 DRUPAL_CURRENT_DEV=8.8
+CHROME_DRIVER_VERSION=76.0.3809.68
 
 STABLE_TPL=8.x
 DEV_TPL=8.x-dev
@@ -31,7 +32,7 @@ endef
 
 define file_prepare
 	@cp -r ./${STABLE_TPL}/ ./$(1)/;
-	@DRUPAL_TAG="$(1)" envsubst < "./$(1)/drupal/Dockerfile.tpl" > "./$(1)/drupal/Dockerfile";
+	@DRUPAL_TAG="$(1)" CHROME_DRIVER_VERSION=${CHROME_DRIVER_VERSION} envsubst < "./$(1)/drupal/Dockerfile.tpl" > "./$(1)/drupal/Dockerfile";
 	@rm -f "./$(1)/drupal/Dockerfile.tpl";
 	@DRUPAL_TAG="$(1)" envsubst < "./$(1)/no-drupal/Dockerfile.tpl" > "./$(1)/no-drupal/Dockerfile";
 	@rm -f "./$(1)/no-drupal/Dockerfile.tpl";
