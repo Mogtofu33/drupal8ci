@@ -95,7 +95,6 @@ RUN composer run-script drupal-phpunit-upgrade --no-ansi \
 USER root
 
 COPY --chown=www-data:www-data run-tests.sh /scripts/run-tests.sh
-COPY --chown=chromeuser:chromeuser start-chrome.sh /scripts/start-chrome.sh
 COPY --chown=chromeuser:chromeuser start-chromedriver.sh /scripts/start-chromedriver.sh
 
 RUN chmod +x /scripts/*.sh \
@@ -112,6 +111,7 @@ RUN chmod +x /scripts/*.sh \
   && sed -i "s#;max_input_nesting_level = 64#max_input_nesting_level = 512#g" /usr/local/etc/php/php.ini \
   # Convenient alias.
   && echo "alias ls='ls --color=auto -lAh'" >> /root/.bashrc \
+  && echo "alias l='ls --color=auto -lAh'" >> /root/.bashrc \
   && cp /root/.bashrc /var/www/.bashrc \
   && chown www-data:www-data /var/www/.bashrc
 
