@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-/usr/bin/chromium ${CHROMIUM_OPTS}
+/usr/bin/google-chrome ${CHROMIUM_OPTS}
