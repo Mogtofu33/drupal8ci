@@ -76,7 +76,7 @@ base:
         docker login -u $RELEASE_USER -p $RELEASE_PASSWORD $RELEASE_REGISTRY
         docker push $RELEASE_IMAGE/$IMAGE
         docker push $RELEASE_IMAGE/$IMAGE_DEV
-        if [ ! $DO_TRANSITION ]; then
+        if [ $DO_TRANSITION == 1 ]; then
           docker push $RELEASE_IMAGE/$IMAGE_TEST
         fi
       fi
