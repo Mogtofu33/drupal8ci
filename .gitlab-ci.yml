@@ -75,7 +75,7 @@ current:
     # Base official image.
     IMAGE_BASE: drupal:${DRUPAL_CURRENT}-apache
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_CURRENT}
-    DIR: '${DRUPAL_CURRENT}/drupal'
+    DIR: '${DRUPAL_CURRENT}'
 
 transition:
   stage: build
@@ -84,7 +84,7 @@ transition:
     # Base official image.
     IMAGE_BASE: drupal:${DRUPAL_CURRENT}-apache
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_TRANSITION}
-    DIR: '${DRUPAL_TRANSITION}/drupal'
+    DIR: '${DRUPAL_TRANSITION}'
 
 dev:
   stage: build
@@ -93,4 +93,4 @@ dev:
     # Base official image.
     IMAGE_BASE: drupal:${DRUPAL_CURRENT}-apache
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_DEV}
-    DIR: '${DRUPAL_DEV}/drupal'
+    DIR: '${DRUPAL_DEV}'
