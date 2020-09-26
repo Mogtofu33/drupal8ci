@@ -1,0 +1,22 @@
+{
+    "name": "mog33/drupal8ci",
+    "description": "Packages for CI with Drupal 8 for https://gitlab.com/mog33/drupal8ci.",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "hirak/prestissimo": "^0.3",
+        "edgedesign/phpqa": "^1.23",
+        "consolidation/robo": "^1.4",
+        "drupal/coder": "^8.3",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "php-parallel-lint/php-console-highlighter": "^0.4",
+        "php-parallel-lint/php-console-color": "^0.2",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.6",
+        "sensiolabs/security-checker": "^6.0",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-deprecation-rules": "~0.12.0",
+        "nette/neon": "^3.1",
+        "mglaman/phpstan-drupal": "^0.12"
+    }
+}

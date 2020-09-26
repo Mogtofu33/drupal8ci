@@ -1,11 +1,8 @@
 # https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/
-# https://github.com/docker-library/drupal/blob/master/$IMAGE_TAG/apache/Dockerfile
-FROM drupal:${IMAGE_TAG}-apache
+# https://github.com/docker-library/drupal/blob/master/8.9/apache/Dockerfile
+FROM drupal:8.9-apache
 
 LABEL maintainer="dev-drupal.com"
-
-# Remove the Drupal project that comes with the parent image.
-RUN rm -rf ..?* .[!.]* *
 
 # Install needed programs for next steps.
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -60,13 +57,12 @@ RUN curl -fsSL https://chromedriver.storage.googleapis.com/$(curl -s https://chr
   && mkdir -p /home/chromeuser && chown -R chromeuser:chromeuser /home/chromeuser
 
 #==================
-# Composer.
-COPY --chown=www-data:www-data --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# Composer is included in base image:
+# https://github.com/docker-library/drupal/blob/master/8.8/apache-buster/Dockerfile#L60
 COPY --chown=www-data:www-data composer.json /var/www/.composer/composer.json
 
-RUN mkdir -p /var/www/.composer /var/www/html \
-  && chmod 777 /var/www \
-  && chown -R www-data:www-data /var/www
+RUN chmod 777 /var/www /opt/drupal \
+  && chown -R www-data:www-data /var/www /opt/drupal
 
 USER www-data
 
@@ -76,32 +72,34 @@ WORKDIR /var/www/.composer
 # Put a turbo on composer, install phpqa + tools + Robo + Coder.
 # see composer.json
 RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-ansi --no-suggest \
-  && composer clear-cache \
-  && rm -rf /var/www/.composer/cache/*
+  && composer clear-cache
 
-WORKDIR /var/www/html
+WORKDIR /opt/drupal
 
-# Manage final tasks.
 USER root
 
+# Add dev, drush and update phpunit based on how official image use composer.
+RUN set -eux; \
+  export COMPOSER_HOME="$(mktemp -d)"; \
+  COMPOSER_MEMORY_LIMIT=-1 composer require "drupal/core-dev:~8.9" "drush/drush:^10" --working-dir="/opt/drupal" --no-interaction --no-ansi --no-suggest; \
+  chown -R www-data:www-data web/profiles; \
+  # delete composer cache
+  rm -rf ""
+
+# Manage final tasks.
 COPY --chown=www-data:www-data run-tests.sh /scripts/run-tests.sh
 COPY --chown=chromeuser:chromeuser start-chromedriver.sh /scripts/start-chromedriver.sh
 COPY --chown=chromeuser:chromeuser start-chrome.sh /scripts/start-chrome.sh
 
 RUN chmod +x /scripts/*.sh \
   && ln -sf /scripts/* /usr/local/bin \
-  # Symlink binaries.
+  # Symlink composer downloaded binaries.
   && ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \
-  # Remove Apache logs to stdout from the php image (used by Drupal image).
-  && rm -f /var/log/apache2/access.log \
   # Fix Php performances.
   && mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
   && sed -i "s#memory_limit = 128M#memory_limit = 4G#g" /usr/local/etc/php/php.ini \
   && sed -i "s#max_execution_time = 30#max_execution_time = 90#g" /usr/local/etc/php/php.ini \
   && sed -i "s#;max_input_nesting_level = 64#max_input_nesting_level = 512#g" /usr/local/etc/php/php.ini \
-  # Fix Apache DocumentRoot.
-  && sed -ri -e 's!DocumentRoot /var/www/html!DocumentRoot /var/www/html/web!g' /etc/apache2/sites-available/*.conf \
-  && sed -ri -e 's!DocumentRoot /var/www!DocumentRoot /var/www/html/web!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
   # Convenient alias for root and www-data.
   && echo "alias ls='ls --color=auto -lAh'" >> /root/.bashrc \
   && echo "alias l='ls --color=auto -lAh'" >> /root/.bashrc \

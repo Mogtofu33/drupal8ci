@@ -1,31 +1,25 @@
 DRUPAL_STABLE=8.8
 DRUPAL_DEV=8.9
-DRUPAL_DEV_RELEASE=8.9
 DRUPAL_TEST=9.0
-DRUPAL_TEST_RELEASE=9.0
 RELEASE=2.x-dev
 
 TPL=tpl
 
 define prepare
-	@echo "Prepare $(3) from ${TPL} for release $(2)..."
-	@rm -rf ./$(3)/;
-	@cp -r ./${TPL}/ ./$(3)/;
-	@RELEASE="$(RELEASE)" IMAGE_TAG="$(1)" RELEASE_TAG="$(2)" DEV_TAG="$(3)" envsubst < "./$(TPL)/drupal/Dockerfile" > "./$(3)/drupal/Dockerfile";
-	@RELEASE="$(RELEASE)" IMAGE_TAG="$(1)" envsubst < "./$(TPL)/base/Dockerfile" > "./$(3)/base/Dockerfile";
-	@RELEASE="$(RELEASE)" IMAGE_TAG="$(1)" envsubst < "./$(TPL)/base/composer.json" > "./$(3)/base/composer.json";
+	@echo "Prepare $(1) from ${TPL} for release $(1)..."
+	@rm -rf ./$(1)/;
+	@cp -r ./${TPL}/ ./$(1)/;
+	@RELEASE="$(RELEASE)" IMAGE_TAG="$(1)" envsubst < "./$(TPL)/Dockerfile" > "./$(1)/Dockerfile";
 	@echo "...Done!"
 endef
 
 prepare:
-	$(call prepare,${DRUPAL_STABLE},${DRUPAL_STABLE},${DRUPAL_STABLE})
-	$(call prepare,${DRUPAL_STABLE},${DRUPAL_DEV_RELEASE},${DRUPAL_DEV})
-	@rm -rf ${DRUPAL_DEV}/base
+	$(call prepare,${DRUPAL_STABLE})
+	$(call prepare,${DRUPAL_DEV})
 ifeq "${DRUPAL_TEST}" ""
 	@echo "[[ Skipping test ]]"
 else
-	$(call prepare,${DRUPAL_STABLE},${DRUPAL_TEST_RELEASE},${DRUPAL_TEST})
-	@rm -rf ${DRUPAL_TEST}/base
+	$(call prepare,${DRUPAL_TEST})
 endif
 
 .PHONY: prepare

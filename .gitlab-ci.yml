@@ -20,9 +20,7 @@ default:
       junit: report.xml
 
 stages:
-  # Base image is without drupal.
-  - base
-  - drupal
+  - build
 
 variables:
   DRUPAL_CURRENT: '8.8'
@@ -41,8 +39,6 @@ variables:
 
 .build_test_release:
   script:
-    # Make sure we are using Gitlab image as base and not docker hub (will do nothing for base).
-    - sed -i "s#FROM mogtofu33/drupal8ci#FROM ${CI_REGISTRY_IMAGE}/drupal8ci#g" ${CI_PROJECT_DIR}/$DIR/Dockerfile
     # Build the image.
     - echo -e "\033[1;36m Build $CI_REGISTRY_IMAGE/$IMAGE from $DIR \033[0;37m"
     - |
@@ -72,43 +68,29 @@ variables:
         docker push $RELEASE_IMAGE/$IMAGE
       fi
 
-base:
-  stage: base
+current:
+  stage: build
   extends: .build_test_release
   variables:
-    # Format is for Gitlab ci for Drupal: drupal8ci:${CI_REF}-${CI_DRUPAL_VERSION}
-    IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-base
-    DIR: '${DRUPAL_CURRENT}/base'
     # Base official image.
     IMAGE_BASE: drupal:${DRUPAL_CURRENT}-apache
-    EXTRA_IMAGE: composer:latest
-
-current:
-  stage: drupal
-  dependencies:
-    - base
-  extends: .build_test_release
-  variables:
-    IMAGE_BASE: ${CI_REGISTRY_IMAGE}/drupal8ci:${CI_COMMIT_BRANCH}-base
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_CURRENT}
     DIR: '${DRUPAL_CURRENT}/drupal'
 
 transition:
-  stage: drupal
-  dependencies:
-    - base
+  stage: build
   extends: .build_test_release
   variables:
-    IMAGE_BASE: ${CI_REGISTRY_IMAGE}/drupal8ci:${CI_COMMIT_BRANCH}-base
+    # Base official image.
+    IMAGE_BASE: drupal:${DRUPAL_CURRENT}-apache
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_TRANSITION}
     DIR: '${DRUPAL_TRANSITION}/drupal'
 
 dev:
-  stage: drupal
-  dependencies:
-    - base
+  stage: build
   extends: .build_test_release
   variables:
-    IMAGE_BASE: ${CI_REGISTRY_IMAGE}/drupal8ci:${CI_COMMIT_BRANCH}-base
+    # Base official image.
+    IMAGE_BASE: drupal:${DRUPAL_CURRENT}-apache
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_DEV}
     DIR: '${DRUPAL_DEV}/drupal'
