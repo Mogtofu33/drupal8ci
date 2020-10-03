@@ -2,15 +2,16 @@
 
 ## Details
 
-[Drupal 8](https://www.drupal.org/8) ci image with a lot of Php/NodeJs tools needed for CI or Local Build/Tests/Lint.
+[Drupal 8/9](https://www.drupal.org/8) ci image based on official [docker Drupal](https://github.com/docker-library/drupal)
+with some Php/NodeJs tools needed for CI or Local Build/Test/Lint.
 
 Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
 
 - Fork from [juampynr/drupal8ci](https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/)
-- Based on  [Drupal official image](https://hub.docker.com/_/drupal/), added
+- Based on [Drupal official image](https://github.com/docker-library/drupal), added
   - [Node.js 10](https://nodejs.org/en/) + [Yarn](https://yarnpkg.com)
-  - [Php7 + Apache](https://github.com/docker-library/php/tree/master/7.3/stretch/apache) added extensions: xsl, imagick, xdebug
-  - [Composer](https://getcomposer.org) + [Prestissimo plugin](https://github.com/hirak/prestissimo)
+  - [Google chrome stable](https://dl.google.com/linux/chrome/deb/)  + [Chromedriver](http://chromedriver.chromium.org)
+  - [Composer prestissimo plugin](https://github.com/hirak/prestissimo)
   - [Robo CI](http://robo.li)
   - [Phpqa](https://github.com/EdgedesignCZ/phpqa) including:
     - [Phpmetrics](https://www.phpmetrics.org)
@@ -23,19 +24,19 @@ Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
     - [phpstan](https://github.com/phpstan/phpstan)
   - [Drupal Coder](https://www.drupal.org/project/coder)
   - Mariadb (MySQL) client
+  - Php: added extensions intl, xsl, mysqli, imagick, xdebug
+
   - [jq](https://stedolan.github.io/jq/)
 
 ## Basic usage (local)
 
-The default image `8.8` include Drupal core managed by Composer with Google Chrome.
+All images are based on official [docker Drupal](https://github.com/docker-library) images managed by Composer.
 
-Tag `8.9` rely on current Drupal `8.9` latest tag (alpha, beta, stable...) version.
+To use with a local Drupal 8/9 managed by Composer, mount your Drupal on `/var/www/html`
 
-Tag `9.0` rely on current Drupal `9.0` latest tag (alpha, beta, stable...) version.
+## Issues
 
-Tag with suffix `-base` do not include Drupal.
-
-To use with a local Drupal 8 managed by Composer, mount your Drupal on `/var/www/html`
+* Force phpcpd to v5 (and `phpunit/php-timer:3.1.4`) until this [issue](https://github.com/EdgedesignCZ/phpqa/pull/209) is resolved.
 
 ## Build
 
@@ -50,7 +51,7 @@ make prepare
 Basic version check tests with [Obvious Shell Testing (osht)](https://github.com/coryb/osht).
 
 ```bash
-docker run -it --rm mogtofu33/drupal8ci:2.x-dev-8.8 /scripts/run-tests.sh
+docker run -it --rm mogtofu33/drupal8ci:2.x-dev-8.8 /scripts/run-tests.sh report
 ```
 
 ----
