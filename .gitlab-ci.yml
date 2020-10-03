@@ -51,7 +51,7 @@ variables:
     # Tests
     - |
       if [ $SKIP_TESTS == 0 ]; then
-        echo -e "\033[1;36m Run $CI_REGISTRY_IMAGE/$IMAGE /scripts/run-tests.sh report \033[0;37m"
+        echo -e "\033[1;36m Run $CI_REGISTRY_IMAGE/$IMAGE /scripts/run-tests.sh \033[0;37m"
         docker run --rm -v $CI_PROJECT_DIR:/tmp/report -t $CI_REGISTRY_IMAGE/$IMAGE /scripts/run-tests.sh report
       fi
     - echo -e "\033[1;36m Push $CI_REGISTRY_IMAGE/$IMAGE \033[0;37m"
@@ -67,6 +67,8 @@ variables:
         docker login -u $RELEASE_USER -p $RELEASE_PASSWORD $RELEASE_REGISTRY
         docker push $RELEASE_IMAGE/$IMAGE
       fi
+    # Print versions for information.
+    - docker run --rm -t $CI_REGISTRY_IMAGE/$IMAGE /scripts/run-tests.sh
 
 current:
   stage: build
