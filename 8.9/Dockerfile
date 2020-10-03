@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/
-# https://github.com/docker-library/drupal/blob/master/8.9/apache/Dockerfile
+# https://github.com/docker-library/drupal/blob/master/8.9/apache-buster/Dockerfile
 FROM drupal:8.9-apache
 
 LABEL maintainer="dev-drupal.com"
@@ -91,7 +91,8 @@ COPY --chown=www-data:www-data run-tests.sh /scripts/run-tests.sh
 COPY --chown=chromeuser:chromeuser start-chromedriver.sh /scripts/start-chromedriver.sh
 COPY --chown=chromeuser:chromeuser start-chrome.sh /scripts/start-chrome.sh
 
-RUN chmod +x /scripts/*.sh \
+RUN ln -sf /opt/drupal/vendor /var/www/vendor \
+  && chmod +x /scripts/*.sh \
   && ln -sf /scripts/* /usr/local/bin \
   # Symlink composer downloaded binaries.
   && ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \

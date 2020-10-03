@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/
-# https://github.com/docker-library/drupal/blob/master/8.8/apache/Dockerfile
+# https://github.com/docker-library/drupal/blob/master/8.8/apache-buster/Dockerfile
 FROM drupal:8.8-apache
 
 LABEL maintainer="dev-drupal.com"
