@@ -10,12 +10,12 @@ run_tests() {
     local runs=''
   fi
 
-  if [ -f "/var/www/html/vendor/bin/drush" ]; then
+  if [ -f "/opt/drupal/vendor/bin/drush" ]; then
     # Print Drupal version.
-    if [ -f "/var/www/html/composer.json" ]; then 
-  $runs /var/www/html/vendor/bin/drush --root="/var/www/html" status --fields="drupal-version"
+    if [ -f "/opt/drupal/composer.json" ]; then 
+  $runs /opt/drupal/vendor/bin/drush --root="/opt/drupal" status --fields="drupal-version"
     fi
-  $runs /var/www/html/vendor/bin/drush --version
+  $runs /opt/drupal/vendor/bin/drush --version
   fi
 
   $runs php -v
@@ -53,9 +53,9 @@ run_tests() {
 
 get_num_tests() {
   num=12
-  if [ -f "/var/www/html/vendor/bin/drush" ]; then
+  if [ -f "/opt/drupal/vendor/bin/drush" ]; then
     num=13
-    if [ -f "/var/www/html/composer.json" ]; then 
+    if [ -f "/opt/drupal/composer.json" ]; then 
       num=14
     fi
   fi

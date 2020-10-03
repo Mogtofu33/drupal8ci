@@ -32,7 +32,7 @@ Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
 
 All images are based on official [docker Drupal](https://github.com/docker-library) images managed by Composer.
 
-To use with a local Drupal 8/9 managed by Composer, mount your Drupal on `/var/www/html`
+To use with a local Drupal 8/9 managed by Composer, mount your Drupal on `/opt/drupal/`
 
 ## Issues
 
