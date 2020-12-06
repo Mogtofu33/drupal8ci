@@ -23,17 +23,17 @@ stages:
   - build
 
 variables:
-  DRUPAL_CURRENT: '8.8'
-  DRUPAL_TRANSITION: '8.9'
-  DRUPAL_DEV: '9.0'
+  DRUPAL_CURRENT: '8.9'
+  DRUPAL_TRANSITION: '9.0'
+  DRUPAL_DEV:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
   RELEASE_REGISTRY: docker.io
   RELEASE_IMAGE: index.docker.io/$RELEASE_USER
   # Publish result image to Docker Hub.
-  DO_RELEASE: 1
+  DO_RELEASE: 0
   # Cache seems too hard, skip by default...
-  SKIP_CACHE: 1
+  SKIP_CACHE: 0
   SKIP_TESTS: 0
   EXTRA_IMAGE: 0
 
@@ -88,7 +88,7 @@ transition:
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_TRANSITION}
     DIR: '${DRUPAL_TRANSITION}'
 
-dev:
+.dev:
   stage: build
   extends: .build_test_release
   variables:

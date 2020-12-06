@@ -51,7 +51,7 @@ make prepare
 Basic version check tests with [Obvious Shell Testing (osht)](https://github.com/coryb/osht).
 
 ```bash
-docker run -it --rm mogtofu33/drupal8ci:2.x-dev-8.8 /scripts/run-tests.sh report
+docker run -it --rm mogtofu33/drupal8ci:3.x-dev-9.1 /scripts/run-tests.sh report
 ```
 
 ----

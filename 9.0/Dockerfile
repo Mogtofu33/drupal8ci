@@ -58,7 +58,7 @@ RUN curl -fsSL https://chromedriver.storage.googleapis.com/$(curl -s https://chr
 
 #==================
 # Composer is included in base image:
-# https://github.com/docker-library/drupal/blob/master/8.8/apache-buster/Dockerfile#L60
+# https://github.com/docker-library/drupal/blob/master/9.0/apache-buster/Dockerfile#L60
 COPY --chown=www-data:www-data composer.json /var/www/.composer/composer.json
 
 RUN chmod 777 /var/www /opt/drupal \
