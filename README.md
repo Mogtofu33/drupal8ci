@@ -7,26 +7,25 @@ with some Php/NodeJs tools needed for CI or Local Build/Test/Lint.
 
 Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
 
-- Fork from [juampynr/drupal8ci](https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/)
-- Based on [Drupal official image](https://github.com/docker-library/drupal), added
-  - [Node.js 10](https://nodejs.org/en/) + [Yarn](https://yarnpkg.com)
-  - [Google chrome stable](https://dl.google.com/linux/chrome/deb/)  + [Chromedriver](http://chromedriver.chromium.org)
-  - [Composer prestissimo plugin](https://github.com/hirak/prestissimo)
-  - [Robo CI](http://robo.li)
-  - [Phpqa](https://github.com/EdgedesignCZ/phpqa) including:
-    - [Phpmetrics](https://www.phpmetrics.org)
-    - [Phploc](https://github.com/sebastianbergmann/phploc)
-    - [Phpcs](https://github.com/squizlabs/PHP_CodeSniffer)
-    - [Phpmd](https://phpmd.org)
-    - [Pdepend](https://pdepend.org)
-    - [Phpcpd](https://github.com/sebastianbergmann/phpcpd)
-    - [Security-checker](https://github.com/sensiolabs/security-checker)
-    - [phpstan](https://github.com/phpstan/phpstan)
-  - [Drupal Coder](https://www.drupal.org/project/coder)
-  - Mariadb (MySQL) client
-  - Php: added extensions intl, xsl, mysqli, imagick, xdebug
-
-  - [jq](https://stedolan.github.io/jq/)
+* Fork from [juampynr/drupal8ci](https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/)
+* Based on [Drupal official image](https://github.com/docker-library/drupal), added
+  * [Node.js 10](https://nodejs.org/en/) + [Yarn](https://yarnpkg.com)
+  * [Google chrome stable](https://dl.google.com/linux/chrome/deb/)  + [Chromedriver](http://chromedriver.chromium.org)
+  * [Composer prestissimo plugin](https://github.com/hirak/prestissimo)
+  * [Robo CI](http://robo.li)
+  * [Phpqa](https://github.com/EdgedesignCZ/phpqa) including:
+    * [Phpmetrics](https://www.phpmetrics.org)
+    * [Phploc](https://github.com/sebastianbergmann/phploc)
+    * [Phpcs](https://github.com/squizlabs/PHP_CodeSniffer)
+    * [Phpmd](https://phpmd.org)
+    * [Pdepend](https://pdepend.org)
+    * [Phpcpd](https://github.com/sebastianbergmann/phpcpd)
+  * [Security-checker](https://github.com/sensiolabs/security-checker)
+  * [phpstan](https://github.com/phpstan/phpstan)
+  * [Drupal Coder](https://www.drupal.org/project/coder)
+  * Mariadb (MySQL) client
+  * Php: added extensions intl, xsl, mysqli, imagick, xdebug
+  * [jq](https://stedolan.github.io/jq/)
 
 ## Basic usage (local)
 
@@ -51,7 +50,7 @@ make prepare
 Basic version check tests with [Obvious Shell Testing (osht)](https://github.com/coryb/osht).
 
 ```bash
-docker run -it --rm mogtofu33/drupal8ci:3.x-dev-9.1 /scripts/run-tests.sh report
+docker run -it --rm mogtofu33/drupal8ci:3.x-dev-9.0 /scripts/run-tests.sh report
 ```
 
 ----
