@@ -88,7 +88,7 @@ transition:
     IMAGE: drupal8ci:${CI_COMMIT_BRANCH}-${DRUPAL_TRANSITION}
     DIR: '${DRUPAL_TRANSITION}'
 
-.dev:
+dev:
   stage: build
   extends: .build_test_release
   variables:
