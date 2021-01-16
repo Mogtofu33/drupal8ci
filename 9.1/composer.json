@@ -20,6 +20,7 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
         "mglaman/phpstan-drupal": "dev-gh-actions",
-        "nette/neon": "^3.2"
+        "nette/neon": "^3.2",
+        "sebastian/phpcpd": "~6"
     }
 }
