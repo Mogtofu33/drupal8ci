@@ -28,8 +28,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
   nodejs \
   yarn \
   google-chrome-stable \
-  imagemagick \
-  libmagickwand-dev \
+  libicu-dev \
   libnss3-dev \
   libxslt-dev \
   mariadb-client \
@@ -57,12 +56,13 @@ RUN curl -fsSL https://chromedriver.storage.googleapis.com/$(curl -s https://chr
   && mkdir -p /home/chromeuser && chown -R chromeuser:chromeuser /home/chromeuser
 
 #==================
-# Composer is included in base image:
+# Composer v1 is included in base image, update to v2.
 # https://github.com/docker-library/drupal/blob/master/9.1/apache-buster/Dockerfile#L60
+RUN /usr/local/bin/composer selfupdate --2
 COPY --chown=www-data:www-data composer.json /var/www/.composer/composer.json
 
-RUN chmod 777 /var/www /opt/drupal \
-  && chown -R www-data:www-data /var/www /opt/drupal
+RUN chmod 777 /var/www \
+  && chown -R www-data:www-data /var/www
 
 USER www-data
 
@@ -71,11 +71,7 @@ WORKDIR /var/www/.composer
 
 # Put a turbo on composer, install phpqa + tools + Robo + Coder.
 # see composer.json
-RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-ansi --no-suggest \
-  && cd /var/www/.composer/vendor/edgedesign/phpqa \
-  && curl -fsSL https://patch-diff.githubusercontent.com/raw/EdgedesignCZ/phpqa/pull/209.diff -o 209.patch \
-  && git apply 209.patch \
-  && composer clear-cache
+RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-ansi --no-suggest
 
 WORKDIR /opt/drupal
 
@@ -101,7 +97,7 @@ RUN ln -sf /opt/drupal/vendor /var/www/vendor \
   && ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \
   # Fix Php performances.
   && mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
-  && sed -i "s#memory_limit = 128M#memory_limit = 4G#g" /usr/local/etc/php/php.ini \
+  && sed -i "s#memory_limit = 128M#memory_limit = 2G#g" /usr/local/etc/php/php.ini \
   && sed -i "s#max_execution_time = 30#max_execution_time = 90#g" /usr/local/etc/php/php.ini \
   && sed -i "s#;max_input_nesting_level = 64#max_input_nesting_level = 512#g" /usr/local/etc/php/php.ini \
   # Convenient alias for root and www-data.

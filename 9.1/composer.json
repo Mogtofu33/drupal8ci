@@ -4,19 +4,22 @@
     "type": "project",
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "repositories": [
+        {
+          "type": "git",
+          "url": "https://github.com/mogtofu33/phpqa"
+        }
+    ],
     "require": {
-        "hirak/prestissimo": "^0.3",
-        "edgedesign/phpqa": "dev-master",
-        "consolidation/robo": "^1.4",
+        "edgedesign/phpqa": "dev-feat-robo2-phpcpd6-composer2",
+        "consolidation/robo": "~2",
         "drupal/coder": "^8.3",
         "php-parallel-lint/php-parallel-lint": "^1.2",
-        "php-parallel-lint/php-console-highlighter": "^0.4",
-        "php-parallel-lint/php-console-color": "^0.2",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "sensiolabs/security-checker": "^6.0",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
-        "nette/neon": "^3.1",
-        "mglaman/phpstan-drupal": "dev-gh-actions"
+        "mglaman/phpstan-drupal": "dev-gh-actions",
+        "nette/neon": "^3.2"
     }
 }
