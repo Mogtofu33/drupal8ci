@@ -78,9 +78,10 @@ WORKDIR /opt/drupal
 USER root
 
 # Add dev, drush and update phpunit based on how official image use composer.
+# Added phpspec, @see https://www.drupal.org/project/drupal/issues/3182653
 RUN set -eux; \
   export COMPOSER_HOME="$(mktemp -d)"; \
-  COMPOSER_MEMORY_LIMIT=-1 composer require "drupal/core-dev:~9.1" "drush/drush:^10" --working-dir="/opt/drupal" --no-interaction --no-ansi --no-suggest; \
+  COMPOSER_MEMORY_LIMIT=-1 composer require "drupal/core-dev:~9.1" "drush/drush:^10" "phpspec/prophecy-phpunit" --working-dir="/opt/drupal" --no-interaction --no-ansi --no-suggest; \
   chown -R www-data:www-data web/profiles; \
   # delete composer cache
   rm -rf ""
