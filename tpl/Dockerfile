@@ -31,14 +31,15 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
   imagemagick \
   libmagickwand-dev \
   libnss3-dev \
+  libssl-dev \
   libxslt-dev \
   mariadb-client \
   jq \
   git \
   unzip \
   vim \
-  # Install intl, xsl, mysqli, xdebug, imagick.
-  && docker-php-ext-install intl xsl mysqli \
+  # Install intl, xsl, mysqli, xdebug, imagick, bcmath.
+  && docker-php-ext-install intl xsl mysqli bcmath calendar sockets pcntl opcache exif ftp \
   && pecl install imagick xdebug \
   && docker-php-ext-enable imagick xdebug \
   && apt-get clean \
