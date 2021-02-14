@@ -82,7 +82,7 @@ USER root
 # Add dev, drush and update phpunit based on how official image use composer.
 RUN set -eux; \
   export COMPOSER_HOME="$(mktemp -d)"; \
-  COMPOSER_MEMORY_LIMIT=-1 composer require "drupal/core-dev:~9.0" "drush/drush:^10" --working-dir="/opt/drupal" --no-interaction --no-ansi --no-suggest; \
+  COMPOSER_MEMORY_LIMIT=-1 composer require "drupal/core-dev:~9.0.0" "drush/drush:^10" --working-dir="/opt/drupal" --no-interaction --no-ansi --no-suggest; \
   chown -R www-data:www-data web/profiles; \
   # delete composer cache
   rm -rf ""
