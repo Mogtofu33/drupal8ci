@@ -96,6 +96,10 @@ RUN ln -sf /opt/drupal/vendor /var/www/vendor \
   && ln -sf /scripts/* /usr/local/bin \
   # Symlink composer downloaded binaries.
   && ln -sf /var/www/.composer/vendor/bin/* /usr/local/bin \
+  # Add security checker.
+  && curl -fsSL https://github.com/fabpot/local-php-security-checker/releases/download/v1.0.0/local-php-security-checker_1.0.0_linux_amd64 -o security-checker \
+  && mv security-checker /usr/local/bin \
+  && chmod +x /usr/local/bin/security-checker \
   # Fix Php performances.
   && mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
   && sed -i "s#memory_limit = 128M#memory_limit = 2G#g" /usr/local/etc/php/php.ini \

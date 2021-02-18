@@ -20,6 +20,7 @@ Used with project [Gitlab CI Drupal](https://gitlab.com/mog33/gitlab-ci-drupal).
     * [Phpmd](https://phpmd.org)
     * [Pdepend](https://pdepend.org)
     * [Phpcpd](https://github.com/sebastianbergmann/phpcpd)
+  * [Security checker](https://github.com/fabpot/local-php-security-checker)
   * [phpstan](https://github.com/phpstan/phpstan)
   * [Drupal Coder](https://www.drupal.org/project/coder)
   * Mariadb (MySQL) client
