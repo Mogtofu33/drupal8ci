@@ -1,6 +1,6 @@
 # https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/
-# https://github.com/docker-library/drupal/blob/master/9.1/apache-buster/Dockerfile
-FROM drupal:9.1-apache
+# https://github.com/docker-library/drupal/blob/master/$IMAGE_TAG/apache-buster/Dockerfile
+FROM drupal:${IMAGE_TAG}-apache
 
 LABEL maintainer="dev-drupal.com"
 
@@ -58,7 +58,7 @@ RUN curl -fsSL https://chromedriver.storage.googleapis.com/$(curl -s https://chr
 
 #==================
 # Composer v1 is included in base image, update to v2.
-# https://github.com/docker-library/drupal/blob/master/9.1/apache-buster/Dockerfile#L60
+# https://github.com/docker-library/drupal/blob/master/$IMAGE_TAG/apache-buster/Dockerfile#L60
 RUN /usr/local/bin/composer selfupdate --2
 COPY --chown=www-data:www-data composer.json /var/www/.composer/composer.json
 
@@ -83,10 +83,10 @@ USER root
 # Added phpspec, @see https://www.drupal.org/project/drupal/issues/3182653
 RUN set -eux; \
   export COMPOSER_HOME="$(mktemp -d)"; \
-  COMPOSER_MEMORY_LIMIT=-1 composer require "drupal/core-dev:~9.1.0" "drush/drush:^10" "phpspec/prophecy-phpunit" --working-dir="/opt/drupal" --no-interaction --no-ansi --no-suggest; \
+  COMPOSER_MEMORY_LIMIT=-1 composer require "drupal/core-dev:~${IMAGE_TAG}.0" "drush/drush:^10" "phpspec/prophecy-phpunit" --working-dir="/opt/drupal" --no-interaction --no-ansi --no-suggest; \
   chown -R www-data:www-data web/profiles; \
   # delete composer cache
-  rm -rf ""
+  rm -rf "$COMPOSER_HOME"
 
 # Manage final tasks.
 COPY --chown=www-data:www-data run-tests.sh /scripts/run-tests.sh

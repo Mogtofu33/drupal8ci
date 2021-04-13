@@ -1,0 +1,25 @@
+{
+    "name": "mog33/drupal8ci",
+    "description": "Packages for CI with Drupal 9 for https://gitlab.com/mog33/drupal8ci.",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+          "type": "git",
+          "url": "https://github.com/mogtofu33/phpqa"
+        }
+    ],
+    "require": {
+        "edgedesign/phpqa": "dev-feat-robo2-phpcpd6-composer2",
+        "consolidation/robo": "~2",
+        "drupal/coder": "^8.3",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-deprecation-rules": "^0.12",
+        "mglaman/phpstan-drupal": "dev-gh-actions",
+        "nette/neon": "^3.2",
+        "sebastian/phpcpd": "~6"
+    }
+}
