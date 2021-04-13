@@ -18,7 +18,7 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
-        "mglaman/phpstan-drupal": "dev-gh-actions",
+        "mglaman/phpstan-drupal": "^0.12",
         "nette/neon": "^3.2",
         "sebastian/phpcpd": "~6"
     }
