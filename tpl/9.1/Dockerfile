@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/juampynr/drupal8ci/~/dockerfile/
-# https://github.com/docker-library/drupal/blob/master/$IMAGE_TAG/apache-buster/Dockerfile
+# https://github.com/docker-library/drupal/blob/master/9.1/php8.0/apache-buster/Dockerfile
 FROM drupal:${IMAGE_TAG}-apache
 
 LABEL maintainer="dev-drupal.com"
@@ -58,7 +58,7 @@ RUN curl -fsSL https://chromedriver.storage.googleapis.com/$(curl -s https://chr
 
 #==================
 # Composer v1 is included in base image, update to v2.
-# https://github.com/docker-library/drupal/blob/master/$IMAGE_TAG/apache-buster/Dockerfile#L60
+# https://github.com/docker-library/drupal/blob/master/9.1/php8.0/apache-buster/Dockerfile#L60
 RUN /usr/local/bin/composer selfupdate --2
 COPY --chown=www-data:www-data composer.json /var/www/.composer/composer.json
 
